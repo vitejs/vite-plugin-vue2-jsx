@@ -10,14 +10,13 @@ import { normalizePath } from 'vite'
 import type { ComponentOptions } from 'vue'
 import type { Plugin } from 'vite'
 
-import { HMR_RUNTIME_ID } from './hmrRuntime'
+import { HMR_RUNTIME_ID, hmrRuntimeCode } from './hmrRuntime'
 
 import type { Options } from './types'
 export * from './types'
 
-const ssrRegisterHelperId = '/__vue-jsx-ssr-register-helper'
+const ssrRegisterHelperId = '/__vue2-jsx-ssr-register-helper'
 const ssrRegisterHelperCode =
-  `import { useSSRContext } from "vue"\n` +
   `export ${ssrRegisterHelper.toString()}`
 
 /**
@@ -26,14 +25,14 @@ const ssrRegisterHelperCode =
  */
 // @ts-ignore
 function ssrRegisterHelper(comp: ComponentOptions, filename: string) {
-  const setup = comp.setup
+  const created = comp.created
   // @ts-ignore
-  comp.setup = (props, ctx) => {
+  comp.created = function() {
     // @ts-ignore
-    const ssrContext = useSSRContext()
+    const ssrContext = this.$ssrContext
     ;(ssrContext.modules || (ssrContext.modules = new Set())).add(filename)
-    if (setup) {
-      return setup(props, ctx)
+    if (created) {
+      created.call(comp)
     }
   }
 }
@@ -52,10 +51,6 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
         // since we are handling jsx and tsx now
         esbuild: {
           include: /\.ts$/
-        },
-        define: {
-          __VUE_OPTIONS_API__: config.define?.__VUE_OPTIONS_API__ ?? true,
-          __VUE_PROD_DEVTOOLS__: config.define?.__VUE_PROD_DEVTOOLS__ ?? false
         }
       }
     },
@@ -70,11 +65,19 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
       if (id === ssrRegisterHelperId) {
         return id
       }
+
+      if (id === HMR_RUNTIME_ID) {
+        return id
+      }
     },
 
     load(id) {
       if (id === ssrRegisterHelperId) {
         return ssrRegisterHelperCode
+      }
+
+      if (id === HMR_RUNTIME_ID) {
+        return hmrRuntimeCode
       }
     },
 
@@ -94,7 +97,12 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
       // use filepath for plain jsx files (e.g. App.jsx)
       if (filter(id) || filter(filepath)) {
         const plugins = [importMeta, ...babelPlugins]
-        const presets = [jsx, babelPresetOptions]
+        const presets = [
+          [jsx, {
+            compositionAPI: 'native',
+            ...babelPresetOptions
+          }]
+        ]
         if (id.endsWith('.tsx') || filepath.endsWith('.tsx')) {
           plugins.push([
             // @ts-ignore missing type
@@ -215,7 +223,7 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
             let code = result.code
             let callbackCode = ``
             
-            code += `import __VUE_HMR_RUNTIME__ from "${HMR_RUNTIME_ID}"`
+            code += `\nimport __VUE_HMR_RUNTIME__ from "${HMR_RUNTIME_ID}"`
 
             for (const { local, exported, id } of hotComponents) {
               code +=
