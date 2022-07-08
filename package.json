@@ -1,6 +1,6 @@
 {
-  "name": "@vitejs/plugin-vue-jsx",
-  "version": "2.0.0-beta.0",
+  "name": "@vitejs/plugin-vue2-jsx",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "Evan You",
   "files": [
@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild && pnpm run patch-cjs",
-    "patch-cjs": "tsx ../../scripts/patchCJS.ts",
+    "patch-cjs": "tsx ./scripts/patchCJS.ts",
     "prepublishOnly": "npm run build"
   },
   "engines": {
@@ -27,24 +27,29 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vitejs/vite.git",
-    "directory": "packages/plugin-vue-jsx"
+    "url": "git+https://github.com/vitejs/plugin-vue2-jsx.git"
   },
   "bugs": {
-    "url": "https://github.com/vitejs/vite/issues"
+    "url": "https://github.com/vitejs/plugin-vue2-jsx/issues"
   },
-  "homepage": "https://github.com/vitejs/vite/tree/main/packages/plugin-vue-jsx#readme",
+  "homepage": "https://github.com/vitejs/plugin-vue2-jsx#readme",
   "dependencies": {
     "@babel/core": "^7.18.6",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/plugin-transform-typescript": "^7.18.6",
-    "@vue/babel-plugin-jsx": "^1.1.1"
+    "@rollup/pluginutils": "^4.2.1",
+    "@vue/babel-preset-jsx": "^1.3.0"
   },
   "devDependencies": {
-    "vite": "workspace:*"
+    "@types/babel__core": "^7.1.19",
+    "picocolors": "^1.0.0",
+    "tsx": "^3.7.1",
+    "unbuild": "^0.7.4",
+    "vite": "^2.9.13",
+    "vue": "^2.7.0"
   },
   "peerDependencies": {
-    "vite": "^3.0.0-alpha",
-    "vue": "^3.0.0"
+    "vite": "^2.9.13",
+    "vue": "^2.7.0"
   }
 }

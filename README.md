@@ -1,15 +1,15 @@
-# @vitejs/plugin-vue-jsx [![npm](https://img.shields.io/npm/v/@vitejs/plugin-vue-jsx.svg)](https://npmjs.com/package/@vitejs/plugin-vue-jsx)
+# @vitejs/plugin-vue2-jsx [![npm](https://img.shields.io/npm/v/@vitejs/plugin-vue2-jsx.svg)](https://npmjs.com/package/@vitejs/plugin-vue2-jsx)
 
-Provides Vue 3 JSX & TSX support with HMR.
+Provides Vue 2 JSX & TSX support with HMR.
 
 ```js
 // vite.config.js
-import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueJsx from '@vitejs/plugin-vue2-jsx'
 
 export default {
   plugins: [
     vueJsx({
-      // options are passed on to @vue/babel-plugin-jsx
+      // options are passed on to @vue/babel-preset-jsx
     })
   ]
 }
@@ -33,7 +33,7 @@ Default: `undefined`
 
 A [picomatch pattern](https://github.com/micromatch/picomatch), or array of patterns, which specifies the files to be ignored by the plugin.
 
-> See [@vue/babel-plugin-jsx](https://github.com/vuejs/jsx-next) for other options.
+> See [@vue/babel-preset-jsx](https://github.com/vuejs/jsx-vue2/tree/dev/packages/babel-preset-jsx#readme) for other options.
 
 ## HMR Detection
 

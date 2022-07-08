@@ -2,10 +2,11 @@ import { createHash } from 'node:crypto'
 import path from 'node:path'
 import type { types } from '@babel/core'
 import * as babel from '@babel/core'
-import jsx from '@vue/babel-plugin-jsx'
+import jsx from '@vue/babel-preset-jsx'
 // @ts-expect-error missing type
 import importMeta from '@babel/plugin-syntax-import-meta'
-import { createFilter, normalizePath } from 'vite'
+import { createFilter } from '@rollup/pluginutils'
+import { normalizePath } from 'vite'
 import type { ComponentOptions } from 'vue'
 import type { Plugin } from 'vite'
 import type { Options } from './types'
@@ -21,8 +22,10 @@ const ssrRegisterHelperCode =
  * This function is serialized with toString() and evaluated as a virtual
  * module during SSR
  */
+// @ts-ignore
 function ssrRegisterHelper(comp: ComponentOptions, filename: string) {
   const setup = comp.setup
+  // @ts-ignore
   comp.setup = (props, ctx) => {
     // @ts-ignore
     const ssrContext = useSSRContext()
@@ -33,13 +36,13 @@ function ssrRegisterHelper(comp: ComponentOptions, filename: string) {
   }
 }
 
-function vueJsxPlugin(options: Options = {}): Plugin {
+function vue2JsxPlugin(options: Options = {}): Plugin {
   let root = ''
   let needHmr = false
   let needSourceMap = true
 
   return {
-    name: 'vite:vue-jsx',
+    name: 'vite:vue2-jsx',
 
     config(config) {
       return {
@@ -268,4 +271,4 @@ function getHash(text: string) {
   return createHash('sha256').update(text).digest('hex').substring(0, 8)
 }
 
-export default vueJsxPlugin
+export default vue2JsxPlugin
