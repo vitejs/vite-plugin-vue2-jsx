@@ -1,0 +1,29 @@
+{
+  "name": "@vitejs/vue2-jsx-playground-ssr",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "",
+  "scripts": {
+    "dev": "node server",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build --ssrManifest --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.js --outDir dist/server",
+    "serve": "cross-env NODE_ENV=production node server.js",
+    "debug": "node --inspect-brk server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "serve-static": "^1.15.0",
+    "vue": "^2.7.4",
+    "vue-router": "^3.5.4",
+    "vue-server-renderer": "^2.7.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue2": "^1.1.2",
+    "@vitejs/plugin-vue2-jsx": "workspace:*",
+    "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
+    "vite": "^3.0.0-beta.9"
+  }
+}
