@@ -9,8 +9,10 @@ import { createFilter } from '@rollup/pluginutils'
 import { normalizePath } from 'vite'
 import type { ComponentOptions } from 'vue'
 import type { Plugin } from 'vite'
-import type { Options } from './types'
 
+import { HMR_RUNTIME_ID } from './hmrRuntime'
+
+import type { Options } from './types'
 export * from './types'
 
 const ssrRegisterHelperId = '/__vue-jsx-ssr-register-helper'
@@ -82,7 +84,7 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
         include,
         exclude,
         babelPlugins = [],
-        ...babelPluginOptions
+        ...babelPresetOptions
       } = options
 
       const filter = createFilter(include || /\.[jt]sx$/, exclude)
@@ -91,7 +93,8 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
       // use id for script blocks in Vue SFCs (e.g. `App.vue?vue&type=script&lang.jsx`)
       // use filepath for plain jsx files (e.g. App.jsx)
       if (filter(id) || filter(filepath)) {
-        const plugins = [importMeta, [jsx, babelPluginOptions], ...babelPlugins]
+        const plugins = [importMeta, ...babelPlugins]
+        const presets = [jsx, babelPresetOptions]
         if (id.endsWith('.tsx') || filepath.endsWith('.tsx')) {
           plugins.push([
             // @ts-ignore missing type
@@ -107,6 +110,7 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
           babelrc: false,
           ast: true,
           plugins,
+          presets,
           sourceMaps: needSourceMap,
           sourceFileName: id,
           configFile: false
@@ -210,6 +214,9 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
           if (needHmr && !ssr && !/\?vue&type=script/.test(id)) {
             let code = result.code
             let callbackCode = ``
+            
+            code += `import __VUE_HMR_RUNTIME__ from "${HMR_RUNTIME_ID}"`
+
             for (const { local, exported, id } of hotComponents) {
               code +=
                 `\n${local}.__hmrId = "${id}"` +

@@ -71,3 +71,8 @@ export const Bar = { ... }
 // not exported
 const Foo = defineComponent(...)
 ```
+
+## Unfinished Features
+
+- SSR support
+- Share the same HMR runtime with `@vitejs/plugin-vue2`
