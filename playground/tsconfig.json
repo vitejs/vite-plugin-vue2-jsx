@@ -1,0 +1,10 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": [
+    "./",
+    "../src",
+  ],
+  "vueCompilerOptions": {
+    "target": 2.7
+  }
+}
