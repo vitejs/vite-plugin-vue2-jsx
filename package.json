@@ -51,5 +51,8 @@
   "peerDependencies": {
     "vite": "^2.9.13",
     "vue": "^2.7.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
