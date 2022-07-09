@@ -32,7 +32,7 @@ function ssrRegisterHelper(comp: ComponentOptions, filename: string) {
     const ssrContext = this.$ssrContext
     ;(ssrContext.modules || (ssrContext.modules = new Set())).add(filename)
     if (created) {
-      created.call(comp)
+      created.call(this)
     }
   }
 }
