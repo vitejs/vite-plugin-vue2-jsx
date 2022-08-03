@@ -110,7 +110,7 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
               (r) => r.default
             ),
             // @ts-ignore
-            { isTSX: true, allowExtensions: true }
+            { isTSX: true, allowExtensions: true, allowDeclareFields: true }
           ])
         }
 
