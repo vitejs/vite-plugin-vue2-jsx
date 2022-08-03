@@ -96,7 +96,7 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
       // use id for script blocks in Vue SFCs (e.g. `App.vue?vue&type=script&lang.jsx`)
       // use filepath for plain jsx files (e.g. App.jsx)
       if (filter(id) || filter(filepath)) {
-        const plugins = [importMeta, ...babelPlugins]
+        const plugins = [importMeta]
         const presets = [
           [jsx, {
             compositionAPI: 'native',
@@ -110,10 +110,11 @@ function vue2JsxPlugin(options: Options = {}): Plugin {
               (r) => r.default
             ),
             // @ts-ignore
-            { isTSX: true, allowExtensions: true }
+            { isTSX: true, allowExtensions: true, allowDeclareFields: true }
           ])
         }
-
+        // custom babel plugins should put *after* ts plugin
+        plugins.push(...babelPlugins)
         const result = babel.transformSync(code, {
           babelrc: false,
           ast: true,
