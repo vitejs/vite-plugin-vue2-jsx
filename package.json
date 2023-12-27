@@ -27,12 +27,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vitejs/plugin-vue2-jsx.git"
+    "url": "git+https://github.com/vitejs/vite-plugin-vue2-jsx.git"
   },
   "bugs": {
-    "url": "https://github.com/vitejs/plugin-vue2-jsx/issues"
+    "url": "https://github.com/vitejs/vite-plugin-vue2-jsx/issues"
   },
-  "homepage": "https://github.com/vitejs/plugin-vue2-jsx#readme",
+  "homepage": "https://github.com/vitejs/vite-plugin-vue2-jsx#readme",
   "dependencies": {
     "@babel/core": "^7.20.5",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
