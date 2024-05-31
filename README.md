@@ -1,5 +1,10 @@
 # @vitejs/plugin-vue2-jsx [![npm](https://img.shields.io/npm/v/@vitejs/plugin-vue2-jsx.svg)](https://npmjs.com/package/@vitejs/plugin-vue2-jsx)
 
+> [!CAUTION]
+> Vue 2 has reached EOL, and this project is no longer actively maintained.
+
+---
+
 Provides Vue 2 JSX & TSX support with HMR.
 
 ```js
